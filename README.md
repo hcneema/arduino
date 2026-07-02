@@ -1,5 +1,26 @@
 # Arduino Projects
 
+## Hardware
+**Board:** Elegoo Mega 2560 — The Most Complete Starter Kit
+
+Key components included:
+- Elegoo Mega 2560 microcontroller board
+- 830-point breadboard
+- DHT11 temperature/humidity module
+- LCD1602 16x2 display
+- Ultrasonic sensor (HC-SR04)
+- Servo motor (SG90)
+- Stepper motor + ULN2003 driver
+- PIR motion sensor (HC-SR501)
+- Gyroscope/accelerometer (GY-521)
+- IR receiver + remote
+- Keypad, joystick, rotary encoder
+- RTC module
+- MAX7219 8x8 LED matrix
+- Sound sensor, relay, buzzers, LEDs, resistors, potentiometers
+
+---
+
 ## Projects
 - [weather_station](weather_station/README.md) — DHT11 + LCD1602 temp/humidity display
 - [robot_car](robot_car/README.md) — Serial-controlled robot car with Motor Shield REV3
