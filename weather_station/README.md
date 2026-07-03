@@ -114,6 +114,23 @@ In Arduino IDE go to **Sketch → Include Library → Manage Libraries** and ins
 
 ---
 
+## Current Status (in progress)
+- Wiring complete
+- Code compiles and uploads successfully via Arduino CLI on KV260
+- DHT11 removed (suspected faulty — returns nan)
+- LCD backlight works, contrast adjustable with pot
+- LCD shows boxes but no text — suspected poor pin contact due to breadboard quality
+- New breadboard ordered — next step is to rewire and test direct LCD→Mega wiring (no breadboard for signal pins)
+- Current sketch: minimal Hello World test (weather_station.ino)
+- Mega signal pins currently set to 22–27 in code
+
+## Next Session Checklist
+1. Rewire LCD directly to Mega (no breadboard for signal wires)
+2. Confirm "Hello World" appears on LCD
+3. Reintroduce pot for contrast control
+4. Test DHT11 — replace if still faulty
+5. Upload full weather station sketch
+
 ## First Run Checklist
 1. Upload the sketch
 2. Turn the potentiometer knob slowly until text appears clearly on the LCD
