@@ -30,6 +30,7 @@ The kit comes loaded with components to experiment with:
 
 ## Projects
 
+- [LCD_test](LCD_test/README.md) — Simplest possible LCD wiring test, Hello World
 - [weather_station](weather_station/README.md) — Reads temperature and humidity, displays on an LCD screen
 - [robot_car](robot_car/README.md) — A robot car controlled by typing commands into your computer
 - [servo_test](servo_test/README.md) — Control a servo motor by typing angles into your computer
