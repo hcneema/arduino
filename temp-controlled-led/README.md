@@ -6,6 +6,80 @@ Put your finger on the DHT11 sensor and watch the LED brighten as it picks up yo
 
 ---
 
+## Build Strategy — Two Circuits First, Then Combine
+
+This project combines two independent ideas. The smart way to build it is to get each one working on its own before wiring them together. Debugging a combined circuit is hard — debugging two simple circuits separately is easy.
+
+---
+
+### Circuit 1 — Transistor LED Switch
+
+Build and test the transistor and LED before the Arduino is involved at all. Use the Mega only as a 5V/GND power supply (no sketch needed).
+
+**What to build:**
+```
+        +5V
+         │
+      [LED +]  ← long leg
+      [LED −]  ← short leg
+         │
+       [220Ω]
+         │
+         ├────── C  (Collector)
+         │
+         │       B  (Base) ──[10kΩ]──┐
+         │                            │  (leave this end unconnected for now)
+         └────── E  (Emitter)
+                      │
+                     GND
+```
+
+**Test it:** Touch the free end of the 10kΩ resistor (the Base side) to the +5V rail. The LED should light up. Touch it to GND — LED goes off. This confirms your transistor orientation, resistor values, and LED polarity are all correct.
+
+If it works: you know the transistor circuit is solid before adding any Arduino complexity.
+
+---
+
+### Circuit 2 — DHT11 Temperature Reading
+
+Wire just the DHT11 to the Mega and upload a minimal sketch to confirm the sensor reads correctly.
+
+**Wiring:**
+```
+DHT11 GND  ──── GND
+DHT11 DATA ──── Mega Pin 8
+DHT11 VCC  ──── +5V
+```
+
+**Test sketch** (upload this first):
+```cpp
+#include <DHT.h>
+DHT dht(8, DHT11);
+void setup() { Serial.begin(9600); dht.begin(); }
+void loop() {
+  delay(2000);
+  Serial.println(dht.readTemperature());
+}
+```
+
+Open Serial Monitor at 9600 baud. You should see a temperature reading every 2 seconds. Put your finger on the sensor — the number should rise.
+
+If it works: you know the sensor, its wiring, and pin 8 are all good.
+
+---
+
+### Combine — Replace the Manual Test with Arduino PWM
+
+Once both circuits work independently:
+
+1. Keep the DHT11 wired as-is (pin 8)
+2. Connect **Mega pin 9** to the free end of the 10kΩ resistor (the Base side, where you were previously touching +5V manually)
+3. Upload the full sketch from this project
+
+The Arduino now does what your finger was doing — but instead of just on/off, it outputs a variable PWM signal that controls exactly how much the transistor opens, and therefore how bright the LED glows.
+
+---
+
 ## What You Need
 
 - Elegoo Mega 2560
