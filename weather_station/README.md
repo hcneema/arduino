@@ -75,9 +75,7 @@ Top rails: -(GND) topmost, +(5V) below. Bottom rails: -(GND) above, +(5V) bottom
 | From | To |
 |------|----|
 | Mega 5V | top + rail |
-| Mega GND | top - rail |
-| top + rail | bottom + rail (jumper wire) |
-| top - rail | bottom - rail (jumper wire) |
+| Mega GND | top − rail |
 
 ### Step 2 — Breadboard-only wiring (no Mega needed yet)
 | From | To | Purpose |
@@ -90,9 +88,8 @@ Top rails: -(GND) topmost, +(5V) below. Bottom rails: -(GND) above, +(5V) bottom
 | b20 | top − rail | LCD pin 16 — backlight negative |
 | f30 | top − rail | Potentiometer left pin — GND |
 | f32 | top + rail | Potentiometer right pin — 5V |
-| j6  | Mega pin 8 | DHT11 DATA |
-| j7  | top + rail | DHT11 VCC — power |
 | j5  | top − rail | DHT11 GND — ground |
+| j7  | top + rail | DHT11 VCC — power |
 
 ### Step 3 — Signal wires to Mega
 | From | To | Purpose |
@@ -123,6 +120,6 @@ Working. Displays temperature and humidity, updates every 2 seconds.
 ## First Run Checklist
 1. Upload the sketch
 2. Turn the potentiometer knob slowly until text appears clearly on the LCD
-3. If you see `Sensor error!` — check the DHT11 wires at i15, i16, i17
+3. If you see `Sensor error!` — check the DHT11 wires at j5, j6, j7 and the wire to Mega pin 8
 4. If the LCD stays completely blank — adjust the contrast knob first before assuming a wiring problem
-5. If the backlight isn't on at all — check b62 and b63
+5. If the backlight isn't on at all — check b6 (5V) and b5 (GND)
