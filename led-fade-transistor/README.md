@@ -20,71 +20,90 @@ This is one of the most important beginner circuits to build — it introduces t
 
 ---
 
-## How It Works
-
-### The Transistor
-A transistor has 3 legs: Base (B), Collector (C), and Emitter (E).
-
-```
-        B ← small signal goes here
-       /
-─── ( NPN transistor
-       \
-        C ← current flows IN
-        |
-        E ← current flows OUT to GND
-```
-
-A tiny current into the **Base** acts like a key — it unlocks a larger current flowing from **Collector to Emitter**. The button does not power the LED directly. It just sends a small signal to the Base, and the transistor does the switching work.
-
-### The Capacitor
-When the button is pressed, the capacitor charges up. When you release the button, it slowly drains through the transistor Base — keeping the transistor on a little longer. This creates the fade-out effect instead of an instant off.
-
-### Why This Matters
-The button controls a tiny current. The transistor uses that tiny signal to switch a bigger current. This is the same principle used in every computer chip, amplifier, and electronic device in the world.
-
----
-
-## Identifying Your Transistor
-
-Hold the transistor with the **flat face toward you, legs pointing down**:
-
-```
-  [ flat face ]
-    |    |    |
-    E    B    C
-
-E = Emitter   → goes to GND
-B = Base      → gets the control signal
-C = Collector → connects to LED circuit
-```
-
-This pinout is the same for both PN2222 and S8050.
-
----
-
-## Identifying the Capacitor
-
-Electrolytic capacitors are **polarized** — they must go in the right way:
-
-```
-longer leg = (+) positive
-shorter leg / stripe side = (−) negative
-```
-
----
-
 ## Circuit Diagram
 
 ```
-+5V → LED(+long leg) → LED(−short leg) → [220Ω] → C (Collector)
-                                                     [PN2222 transistor]
-+5V → [Button] →┬→ [10KΩ] → B (Base)             E (Emitter) → GND
-                 │
-              [100µF +]
-              [100µF −]
-                 │
-                GND
+                              ┌──── C ──[220Ω]──[LED +]──[LED -]──── +5V
++5V ──[BTN]──┬──[10KΩ]────── B    PN2222
+             │                └──── E ──────────────────────────────── GND
+          [100µF]
+             │
+            GND
+```
+
+**Reading the diagram:**
+- Current flows from left to right / top to bottom
+- `[BTN]` = pushbutton
+- `B`, `C`, `E` = Base, Collector, Emitter legs of the transistor
+- `[LED +]` = long leg of LED, `[LED -]` = short leg
+
+---
+
+## How It Works
+
+### 1. The Resistor (220Ω)
+LEDs are not like light bulbs — they do not limit their own current. Without a resistor, too much current flows and the LED burns out in seconds. The 220Ω resistor acts as a gatekeeper, allowing only the right amount of current (~14mA) to flow through the LED.
+
+### 2. The Transistor as a Switch
+The transistor (PN2222) has three legs:
+
+```
+  Flat face toward you:
+
+  [ PN2222 ]
+   │   │   │
+   E   B   C
+
+  E = Emitter   (current exits here → goes to GND)
+  B = Base      (control signal enters here)
+  C = Collector (current enters here ← comes from LED)
+```
+
+Think of the transistor like a water valve:
+- **Base (B)** is the handle you turn
+- **Collector (C) → Emitter (E)** is the pipe
+- A tiny current into the Base opens the valve and lets a much larger current flow through Collector to Emitter
+
+When you press the button → a small current flows into the Base → the transistor switches on → current flows from +5V through the LED and resistor, through the transistor, and out to GND → LED lights up.
+
+When you release the button → no base current → transistor switches off → LED off.
+
+The button never directly powers the LED. It only sends a small signal. The transistor does the actual switching work. This matters because transistors can switch motors, speakers, and other high-current devices that a button alone could never handle.
+
+### 3. The Capacitor and Fade Effect
+A capacitor stores electrical charge — like a tiny rechargeable battery.
+
+```
+Button pressed:   +5V fills the capacitor with charge
+Button released:  capacitor slowly drains its charge through the 10KΩ resistor into the transistor Base
+                  → transistor stays on a little longer, then gradually switches off → LED fades
+```
+
+The fade happens because the capacitor does not discharge instantly — it drains slowly through the 10KΩ resistor. The larger the capacitor, the longer it takes to drain, and the longer the fade.
+
+This RC (Resistor-Capacitor) timing principle is used everywhere in electronics — in timing circuits, audio filters, camera flashes, and oscillators.
+
+### 4. Why the 10KΩ Resistor at the Base?
+The Base pin is sensitive — too much current will damage the transistor. The 10KΩ resistor limits the base current to a safe level (~0.4mA) while still being enough to switch the transistor fully on.
+
+---
+
+## Identifying Your Components
+
+**Transistor — PN2222 or S8050**
+Hold with flat face toward you, legs down → left to right: E · B · C
+
+**Capacitor — 100µF electrolytic**
+```
+Longer leg = (+) positive  →  connects toward the button/signal side
+Shorter leg or stripe = (−) negative  →  connects to GND
+```
+Electrolytic capacitors are polarized — reversing them will damage the component.
+
+**Resistor color bands:**
+```
+220Ω  →  Red · Red · Brown · Gold
+10KΩ  →  Brown · Black · Orange · Gold
 ```
 
 ---
@@ -107,7 +126,7 @@ Plant transistor across 3 separate rows. Flat face toward you. Note which row is
 - Wire from Emitter (E, left leg) → GND rail
 
 **Step 5 — Button**
-- Straddle button across center gap of breadboard (use diagonal corners)
+- Straddle button across center gap of breadboard (use diagonal corner legs)
 - One side → 5V rail
 
 **Step 6 — Junction point**
