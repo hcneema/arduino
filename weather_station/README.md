@@ -60,10 +60,12 @@ Top rails: -(GND) topmost, +(5V) below. Bottom rails: -(GND) above, +(5V) bottom
 
 ### Component Placement
 ```
-[L] = LCD1602         row a, cols 48–63  (body hangs off bottom edge)
-[P] = Potentiometer   e5 (left pin), e7 (right pin), f6 (wiper/middle)
-[D] = DHT11           j15 (VCC), j16 (GND), j17 (DATA)
+[L] = LCD1602         row a, cols 5–20   (body hangs off front edge onto second breadboard)
+[P] = Potentiometer   f30 (left/GND), f31 (middle/wiper), f32 (right/5V)
+[D] = DHT11           j5 (GND), j6 (DATA), j7 (VCC)
 ```
+
+> Note: the DHT11 module from AliExpress has pins labeled GND, DATA, VCC left to right (facing the sensor). Some modules label it S, +, − — check the markings on your specific module.
 
 ---
 
@@ -80,27 +82,28 @@ Top rails: -(GND) topmost, +(5V) below. Bottom rails: -(GND) above, +(5V) bottom
 ### Step 2 — Breadboard-only wiring (no Mega needed yet)
 | From | To | Purpose |
 |------|----|---------|
-| b48 | top - rail | LCD pin 1 — GND |
-| b49 | top + rail | LCD pin 2 — 5V power |
-| b50 | g6 | LCD pin 3 — contrast, connects to pot wiper |
-| b52 | top - rail | LCD pin 5 — RW, always GND (write-only mode) |
-| b62 | top + rail | LCD pin 15 — backlight positive |
-| b63 | top - rail | LCD pin 16 — backlight negative |
-| d5  | top - rail | Potentiometer left pin — GND |
-| d7  | top + rail | Potentiometer right pin — 5V |
-| i15 | top + rail | DHT11 VCC — power |
-| i16 | top - rail | DHT11 GND — ground |
+| b5  | top − rail | LCD pin 1 — GND |
+| b6  | top + rail | LCD pin 2 — 5V power |
+| b7  | f31 | LCD pin 3 — contrast, connects to pot wiper |
+| b9  | top − rail | LCD pin 5 — RW, always GND (write-only mode) |
+| b19 | top + rail | LCD pin 15 — backlight positive |
+| b20 | top − rail | LCD pin 16 — backlight negative |
+| f30 | top − rail | Potentiometer left pin — GND |
+| f32 | top + rail | Potentiometer right pin — 5V |
+| j6  | Mega pin 8 | DHT11 DATA |
+| j7  | top + rail | DHT11 VCC — power |
+| j5  | top − rail | DHT11 GND — ground |
 
 ### Step 3 — Signal wires to Mega
 | From | To | Purpose |
 |------|----|---------|
-| b51 | Mega pin 12 | LCD RS |
-| b53 | Mega pin 11 | LCD E |
-| b58 | Mega pin 5  | LCD D4 |
-| b59 | Mega pin 4  | LCD D5 |
-| b60 | Mega pin 3  | LCD D6 |
-| b61 | Mega pin 2  | LCD D7 |
-| i17 | Mega pin 8  | DHT11 DATA |
+| b8  | Mega pin 22 | LCD RS |
+| b10 | Mega pin 23 | LCD E |
+| b15 | Mega pin 24 | LCD D4 |
+| b16 | Mega pin 25 | LCD D5 |
+| b17 | Mega pin 26 | LCD D6 |
+| b18 | Mega pin 27 | LCD D7 |
+| j6  | Mega pin 8  | DHT11 DATA |
 
 ---
 
@@ -114,22 +117,8 @@ In Arduino IDE go to **Sketch → Include Library → Manage Libraries** and ins
 
 ---
 
-## Current Status (in progress)
-- Wiring complete
-- Code compiles and uploads successfully via Arduino CLI on KV260
-- DHT11 removed (suspected faulty — returns nan)
-- LCD backlight works, contrast adjustable with pot
-- LCD shows boxes but no text — suspected poor pin contact due to breadboard quality
-- New breadboard ordered — next step is to rewire and test direct LCD→Mega wiring (no breadboard for signal pins)
-- Current sketch: minimal Hello World test (weather_station.ino)
-- Mega signal pins currently set to 22–27 in code
-
-## Next Session Checklist
-1. Rewire LCD directly to Mega (no breadboard for signal wires)
-2. Confirm "Hello World" appears on LCD
-3. Reintroduce pot for contrast control
-4. Test DHT11 — replace if still faulty
-5. Upload full weather station sketch
+## Status
+Working. Displays temperature and humidity, updates every 2 seconds.
 
 ## First Run Checklist
 1. Upload the sketch
