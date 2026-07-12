@@ -13,11 +13,60 @@ The simplest possible LCD test — gets "Hello World!" showing on screen before 
 
 ---
 
+## Circuit Diagram
+
+```
+                    ┌─────────────────────────┐
+                    │     ELEGOO MEGA 2560    │
+   +5V ─────────────┤ 5V              GND    ├───── GND
+                    │                         │
+                    │  Pin 22 ────── RS        │
+                    │  Pin 23 ────── E         ├──► LCD1602
+                    │  Pin 24 ────── D4        │
+                    │  Pin 25 ────── D5        │
+                    │  Pin 26 ────── D6        │
+                    │  Pin 27 ────── D7        │
+                    └─────────────────────────┘
+
+LCD1602 power and contrast:
+  pin 1  (VSS) ──── GND
+  pin 2  (VDD) ──── +5V
+  pin 3  (V0)  ──── Potentiometer wiper   ◄── turn knob to set contrast
+  pin 5  (RW)  ──── GND
+  pin 15 (A)   ──── +5V  (backlight +)
+  pin 16 (K)   ──── GND  (backlight −)
+
+Potentiometer (B103):
+  Left  ──── GND
+  Wiper ──── LCD pin 3 (V0 / contrast)
+  Right ──── +5V
+```
+
+---
+
 ## How It Works
-The LCD needs three things:
-1. **Power** — 5V and GND to run
-2. **Contrast** — a voltage controlled by the pot to make text visible
-3. **6 signal wires** — RS, E, D4–D7 carry text from the Mega to the LCD
+
+### The LCD1602 Display
+LCD stands for Liquid Crystal Display. The 1602 means 16 characters wide, 2 rows tall. Inside the display, tiny liquid crystal cells sit between two polarising filters. When voltage is applied to a cell, it rotates the light passing through it — making that spot appear dark. Group enough dark spots together and you get a visible character.
+
+The display needs three things to work:
+
+**1. Power**
+Pin 1 (VSS) → GND and pin 2 (VDD) → 5V give the display its operating voltage. Pins 15 and 16 power the backlight (the blue glow behind the characters).
+
+**2. Contrast**
+Pin 3 (V0) controls how dark the pixels look. It accepts a voltage between 0V and 5V — too low and the pixels are invisible, too high and every pixel goes black. The potentiometer acts as a voltage divider, letting you dial in exactly the right contrast by turning the knob.
+
+**3. Six signal wires from the Mega**
+The Mega sends text over 6 wires:
+- **RS (Register Select)** — tells the LCD whether incoming data is a command (e.g. "clear screen") or a character to display
+- **E (Enable)** — a clock pulse; the LCD reads the data pins each time E pulses HIGH then LOW
+- **D4–D7** — 4 data lines that carry characters 4 bits at a time (two pulses per character)
+
+The `LiquidCrystal` library handles all the timing and pulsing — you just call `lcd.print("Hello World!")` and it works.
+
+### Why setup() and not loop()?
+The sketch puts everything inside `setup()` and leaves `loop()` empty. That's intentional — the LCD remembers what's on screen as long as it has power. There's nothing to update, so there's no need to keep looping. The text appears once and stays.
 
 ---
 
