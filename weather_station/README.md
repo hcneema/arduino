@@ -45,6 +45,71 @@ This is why after powering on, the first thing to do is turn the knob slowly unt
 
 ---
 
+## Circuit Diagram
+
+```
+                    ┌─────────────────────────┐
+                    │     ELEGOO MEGA 2560    │
+   +5V ─────────────┤ 5V              GND    ├───── GND
+                    │                         │
+                    │  Pin 22 ────── RS        │
+                    │  Pin 23 ────── E         │◄── LCD1602
+                    │  Pin 24 ────── D4        │    (6 signal wires)
+                    │  Pin 25 ────── D5        │
+                    │  Pin 26 ────── D6        │
+                    │  Pin 27 ────── D7        │
+                    │                         │
+                    │  Pin 8  ────── DATA     │◄── DHT11
+                    └─────────────────────────┘
+
+LCD1602 power and contrast:
+  pin 1  (VSS) ──── GND
+  pin 2  (VDD) ──── +5V
+  pin 3  (V0)  ──── Potentiometer wiper  ◄── sets contrast
+  pin 5  (RW)  ──── GND                      (turn knob to adjust)
+  pin 15 (A)   ──── +5V  (backlight)
+  pin 16 (K)   ──── GND  (backlight)
+
+DHT11:
+  GND  ──── GND
+  DATA ──── Mega Pin 8
+  VCC  ──── +5V
+
+Potentiometer (B103):
+  Left  ──── GND
+  Wiper ──── LCD pin 3 (V0 / contrast)
+  Right ──── +5V
+```
+
+---
+
+## How the Sketch Works
+
+Every 2 seconds the Arduino runs through this sequence:
+
+```
+DHT11 sensor
+    │  sends temperature + humidity as digital pulses
+    ▼
+Mega Pin 8
+    │  DHT library decodes the pulses into numbers
+    ▼
+Arduino sketch
+    │  formats the text ("Temp: 24.2°C")
+    ▼
+Mega Pins 22–27
+    │  LiquidCrystal library sends characters 4 bits at a time
+    ▼
+LCD1602
+    │  displays the reading on screen
+    ▼
+delay(2000) — waits 2 seconds, then repeats
+```
+
+If the sensor returns an invalid reading (`nan`) — bad wiring, wrong pin order, or a damaged sensor — the sketch shows `Sensor error!` instead and tries again on the next cycle.
+
+---
+
 ## Hardware (Elegoo Mega 2560 kit)
 - Elegoo Mega 2560
 - DHT11 temperature/humidity module
